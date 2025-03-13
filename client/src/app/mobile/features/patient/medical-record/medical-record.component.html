@@ -1,0 +1,95 @@
+<div class="medical-records-container">
+  <header>
+    <app-navbar />
+    <h1>Medical Record</h1>
+  </header>
+  
+  <!-- Loading state -->
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading your medical records...</p>
+    </div>
+  } @else if (error) {
+    <!-- Error state -->
+    <div class="error-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#e53935" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12" y2="16"></line>
+      </svg>
+      <p>{{ error }}</p>
+      <button class="retry-button" (click)="loadRecords()">Try Again</button>
+    </div>
+  } @else if (records.length > 0) {
+    <div class="search-filters">
+      <span>Sort By:</span>
+      <div class="filter-buttons">
+        <button 
+          [class.active]="currentFilter === 'newest'"
+          (click)="setFilter('newest')"
+        >
+          Newest
+        </button>
+        <button 
+          [class.active]="currentFilter === 'oldest'"
+          (click)="setFilter('oldest')"
+        >
+          Oldest
+        </button>
+      </div>
+    </div>
+
+    <div class="records-list">
+      @for (record of filteredRecords; track record.id) {
+        <div class="record-card">
+          <div class="record-content">
+            <div class="record-bullet"></div>
+            <div class="record-details">
+              <h3>Medical Record</h3>
+              <div class="record-info">
+                <div class="info-item">
+                  <strong>Diagnosis:</strong>
+                  <p>{{ record.diagnosis }}</p>
+                </div>
+                <div class="info-item">
+                  <strong>Treatment:</strong>
+                  <p>{{ record.treatment }}</p>
+                </div>
+                @if (record.nextVisit) {
+                  <div class="info-item">
+                    <strong>Next Visit:</strong>
+                    <p>{{ formatDate(record.nextVisit) }}</p>
+                  </div>
+                }
+              </div>
+              <span class="record-date">Date: {{ formatDate(record.date) }}</span>
+            </div>
+            @if (record.id) {
+              <button 
+                class="download-button"
+                (click)="downloadRecord(record.id)"
+                title="Download record"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="no-records">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#14B8A6" stroke-width="2">
+        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+        <polyline points="13 2 13 9 20 9"></polyline>
+      </svg>
+      <p>No medical records available</p>
+      <p class="sub-text">Your doctor hasn't sent any records yet.</p>
+    </div>
+  }
+</div>

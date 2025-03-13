@@ -1,0 +1,24 @@
+<nav class="bottom-nav">
+    <button routerLink="/mobile/patient-dashboard" [class.active]="activeTab === 'home'" (click)="setActiveTab('home')" class="nav-button">
+      <i class="bi bi-house-door-fill"></i>
+      <span *ngIf="activeTab === 'home'" class="nav-label">Home</span>
+    </button>
+  
+    <button routerLink="/mobile/schedule" [class.active]="activeTab === 'appointments'" (click)="setActiveTab('appointments')" class="nav-button">
+      <i class="bi bi-alarm"></i>
+      <span *ngIf="activeTab === 'appointments'" class="nav-label">Appointments</span>
+    </button>
+  
+    <button routerLink="/mobile/appointment-booking" [class.active]="activeTab === 'calendar'" (click)="setActiveTab('calendar')" class="nav-button">
+      <i class="bi bi-calendar-check"></i>
+      <span *ngIf="activeTab === 'calendar'" class="nav-label">Schedule</span>
+    </button>
+  
+    <button routerLink="/mobile/patient-profile" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')" class="nav-button">
+      <i class="bi bi-person"></i>
+      <span *ngIf="activeTab === 'profile'" class="nav-label">Profile</span>
+    </button>
+
+    
+  </nav>
+  

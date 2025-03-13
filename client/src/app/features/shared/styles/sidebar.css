@@ -1,0 +1,141 @@
+:root {
+  --sidebar-width: 260px;
+  --nav-item-height: 44px;
+  --nav-item-padding: 0 24px;
+  --nav-item-font-size: 15.38px;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--bg-white);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1000;
+}
+
+.logo-section {
+  height: 70px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.logo {
+  font-size: 22px;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.logo .primary {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.logo .secondary {
+  color: var(--primary-color-80);
+  font-weight: 400;
+}
+
+.nav-menu {
+  padding: 16px 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  height: var(--nav-item-height);
+  padding: var(--nav-item-padding);
+  color: var(--text-primary);
+  font-size: var(--nav-item-font-size);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  margin: 0 8px;
+}
+
+.nav-item:hover {
+  background: var(--bg-light);
+  color: var(--primary-color);
+}
+
+.nav-item.active {
+  background: var(--bg-icon-light);
+  color: var(--primary-color);
+}
+
+.nav-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: currentColor;
+}
+
+.logout-section {
+  height: var(--nav-item-height);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: var(--nav-item-padding);
+  margin-top: auto;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  font-size: var(--nav-item-font-size);
+  text-decoration: none;
+  width: 100%;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.logout-button:hover {
+  color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 64px;
+  }
+
+  .logo-section {
+    padding: 0 8px;
+    justify-content: center;
+  }
+
+  .logo .secondary {
+    display: none;
+  }
+
+  .nav-item {
+    padding: 0;
+    justify-content: center;
+    margin: 0 4px;
+  }
+
+  .nav-item span,
+  .logout-button span {
+    display: none;
+  }
+
+  .nav-icon {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .logout-section {
+    padding: 0 8px;
+    justify-content: center;
+  }
+}

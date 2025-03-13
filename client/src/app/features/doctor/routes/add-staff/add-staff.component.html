@@ -1,0 +1,101 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <div class="form-container">
+      <div class="form-card">
+        <h1 class="form-title">{{ pageTitle }}</h1>
+        
+        <form [formGroup]="staffForm" (ngSubmit)="onSubmit()" class="staff-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="input-wrapper">
+              <i class="bi bi-person-fill"></i>
+              <input type="text" formControlName="name" placeholder="Enter full name">
+            </div>
+            <div class="error-message" *ngIf="staffForm.get('name')?.touched && staffForm.get('name')?.invalid">
+              Name is required and must be at least 2 characters
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <div class="input-wrapper">
+              <i class="bi bi-envelope-fill"></i>
+              <input type="email" formControlName="email" placeholder="Enter email address">
+            </div>
+            <div class="error-message" *ngIf="staffForm.get('email')?.touched && staffForm.get('email')?.invalid">
+              Please enter a valid email address
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-wrapper">
+              <i class="bi bi-lock-fill"></i>
+              <input type="password" formControlName="password" placeholder="Enter password">
+            </div>
+            <div class="error-message" *ngIf="staffForm.get('password')?.touched && staffForm.get('password')?.invalid">
+              Password must be at least 6 characters
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+            <div class="input-wrapper">
+              <i class="bi bi-telephone-fill"></i>
+              <input type="tel" formControlName="phone" placeholder="Enter phone number">
+            </div>
+            <div class="error-message" *ngIf="staffForm.get('phone')?.touched && staffForm.get('phone')?.invalid">
+              Please enter a valid 10-digit phone number
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Address</label>
+            <div class="input-wrapper">
+              <i class="bi bi-geo-alt-fill"></i>
+              <textarea formControlName="address" placeholder="Enter address" rows="2"></textarea>
+            </div>
+            <div class="error-message" *ngIf="staffForm.get('address')?.touched && staffForm.get('address')?.invalid">
+              Address is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Specialization</label>
+            <div class="input-wrapper">
+              <i class="bi bi-shield-fill-check"></i>
+              <input type="text" formControlName="specialization" placeholder="Enter specialization">
+            </div>
+            <div class="error-message" *ngIf="staffForm.get('specialization')?.touched && staffForm.get('specialization')?.invalid">
+              Specialization is required for doctors
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Qualifications</label>
+            <div class="input-wrapper">
+              <i class="bi bi-award-fill"></i>
+              <textarea formControlName="qualifications" placeholder="Enter qualifications" rows="2"></textarea>
+            </div>
+            <div class="error-message" *ngIf="staffForm.get('qualifications')?.touched && staffForm.get('qualifications')?.invalid">
+              Qualifications are required
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" (click)="onCancel()">
+              <i class="bi bi-x"></i>
+              Cancel
+            </button>
+            <button type="submit" class="submit-btn" [disabled]="staffForm.invalid">
+              <i class="bi bi-check2"></i>
+              {{ isEditMode ? 'Update Doctor' : 'Save Doctor' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

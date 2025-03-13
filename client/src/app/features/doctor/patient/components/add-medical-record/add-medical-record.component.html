@@ -1,0 +1,206 @@
+<div class="form-container">
+  <div class="header">
+    <i class="bi bi-clipboard2-pulse-fill header-icon"></i>
+    <h1 class="header-title">Patient Medical Record</h1>
+  </div>
+
+  <form [formGroup]="medicalRecordForm" class="form-content" (ngSubmit)="onSubmit()">
+    <!-- Patient Information -->
+    <div class="section">
+      <h2 class="section-title">Patient Information</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="fullName">Full Name</label>
+          <input type="text" id="fullName" class="form-control" formControlName="fullName" placeholder="Enter patient's full name">
+          <div *ngIf="medicalRecordForm.get('fullName')?.errors?.['required'] && medicalRecordForm.get('fullName')?.touched" class="error-message">
+            Full name is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="dateOfBirth">Date of Birth</label>
+          <input type="date" id="dateOfBirth" class="form-control date" formControlName="dateOfBirth">
+          <div *ngIf="medicalRecordForm.get('dateOfBirth')?.errors?.['required'] && medicalRecordForm.get('dateOfBirth')?.touched" class="error-message">
+            Date of birth is required
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="gender">Gender</label>
+          <select id="gender" class="select-control" formControlName="gender">
+            <option value="" disabled selected>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          <div *ngIf="medicalRecordForm.get('gender')?.errors?.['required'] && medicalRecordForm.get('gender')?.touched" class="error-message">
+            Gender is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone</label>
+          <input type="tel" id="phone" class="form-control" formControlName="phone" placeholder="Enter phone number">
+          <div *ngIf="medicalRecordForm.get('phone')?.errors?.['required'] && medicalRecordForm.get('phone')?.touched" class="error-message">
+            Phone number is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter email address">
+        <div *ngIf="medicalRecordForm.get('email')?.errors?.['required'] && medicalRecordForm.get('email')?.touched" class="error-message">
+          Email is required
+        </div>
+        <div *ngIf="medicalRecordForm.get('email')?.errors?.['email'] && medicalRecordForm.get('email')?.touched" class="error-message">
+          Please enter a valid email address
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="address">Address</label>
+        <textarea id="address" class="form-control textarea" formControlName="address" placeholder="Enter full address"></textarea>
+        <div *ngIf="medicalRecordForm.get('address')?.errors?.['required'] && medicalRecordForm.get('address')?.touched" class="error-message">
+          Address is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Contact -->
+    <div class="section">
+      <h2 class="section-title">Emergency Contact</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="emergencyName">Name</label>
+          <input type="text" id="emergencyName" class="form-control" formControlName="emergencyName" placeholder="Enter emergency contact name">
+          <div *ngIf="medicalRecordForm.get('emergencyName')?.errors?.['required'] && medicalRecordForm.get('emergencyName')?.touched" class="error-message">
+            Emergency contact name is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="emergencyRelationship">Relationship</label>
+          <input type="text" id="emergencyRelationship" class="form-control" formControlName="emergencyRelationship" placeholder="Enter relationship to patient">
+          <div *ngIf="medicalRecordForm.get('emergencyRelationship')?.errors?.['required'] && medicalRecordForm.get('emergencyRelationship')?.touched" class="error-message">
+            Relationship is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="emergencyPhone">Phone</label>
+        <input type="tel" id="emergencyPhone" class="form-control" formControlName="emergencyPhone" placeholder="Enter emergency contact phone">
+        <div *ngIf="medicalRecordForm.get('emergencyPhone')?.errors?.['required'] && medicalRecordForm.get('emergencyPhone')?.touched" class="error-message">
+          Emergency contact phone is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Social History -->
+    <div class="section">
+      <h2 class="section-title">Social History</h2>
+      <div class="form-row triple">
+        <div class="form-group">
+          <label class="form-label" for="smokingStatus">Smoking Status</label>
+          <select id="smokingStatus" class="select-control" formControlName="smokingStatus">
+            <option value="Never">Never</option>
+            <option value="Former">Former</option>
+            <option value="Current">Current</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="alcoholConsumption">Alcohol Consumption</label>
+          <select id="alcoholConsumption" class="select-control" formControlName="alcoholConsumption">
+            <option value="None">None</option>
+            <option value="Occasional">Occasional</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Heavy">Heavy</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="exerciseFrequency">Exercise Frequency</label>
+          <select id="exerciseFrequency" class="select-control" formControlName="exerciseFrequency">
+            <option value="None">None</option>
+            <option value="Occasional">Occasional</option>
+            <option value="Regular">Regular</option>
+            <option value="Frequent">Frequent</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="occupation">Occupation</label>
+        <input type="text" id="occupation" class="form-control" formControlName="occupation" placeholder="Enter occupation">
+      </div>
+    </div>
+
+    <!-- Assessment and Plan -->
+    <div class="section">
+      <h2 class="section-title">Assessment and Plan</h2>
+      <div class="form-group">
+        <label class="form-label" for="diagnoses">Diagnoses</label>
+        <textarea id="diagnoses" class="form-control textarea" formControlName="diagnoses" placeholder="Enter diagnoses"></textarea>
+        <div *ngIf="medicalRecordForm.get('diagnoses')?.errors?.['required'] && medicalRecordForm.get('diagnoses')?.touched" class="error-message">
+          Diagnoses are required
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="treatmentPlans">Treatment Plans</label>
+        <textarea id="treatmentPlans" class="form-control textarea" formControlName="treatmentPlans" placeholder="Medications, Therapies"></textarea>
+        <div *ngIf="medicalRecordForm.get('treatmentPlans')?.errors?.['required'] && medicalRecordForm.get('treatmentPlans')?.touched" class="error-message">
+          Treatment plans are required
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="followUpDate">Follow-Up Appointments</label>
+        <input type="date" id="followUpDate" class="form-control date" formControlName="followUpDate">
+      </div>
+    </div>
+
+    <!-- Consent and Signatures -->
+    <div class="section">
+      <h2 class="section-title">Consent and Signatures</h2>
+      <div class="checkbox-group">
+        <input type="checkbox" id="consent" class="checkbox-input" formControlName="consentChecked">
+        <label class="checkbox-label" for="consent">
+          I consent to treatment and acknowledge that I have received and understand the privacy practices.
+        </label>
+      </div>
+      <div *ngIf="medicalRecordForm.get('consentChecked')?.errors?.['required'] && medicalRecordForm.get('consentChecked')?.touched" class="error-message">
+        Consent is required
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="patientSignature">Patient Signature</label>
+          <input type="text" id="patientSignature" class="form-control" formControlName="patientSignature" placeholder="Enter patient signature">
+          <div *ngIf="medicalRecordForm.get('patientSignature')?.errors?.['required'] && medicalRecordForm.get('patientSignature')?.touched" class="error-message">
+            Patient signature is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="physicianSignature">Physician Signature</label>
+          <input type="text" id="physicianSignature" class="form-control" formControlName="physicianSignature" placeholder="Enter physician signature">
+          <div *ngIf="medicalRecordForm.get('physicianSignature')?.errors?.['required'] && medicalRecordForm.get('physicianSignature')?.touched" class="error-message">
+            Physician signature is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="signatureDate">Date</label>
+        <input type="date" id="signatureDate" class="form-control date" formControlName="signatureDate">
+        <div *ngIf="medicalRecordForm.get('signatureDate')?.errors?.['required'] && medicalRecordForm.get('signatureDate')?.touched" class="error-message">
+          Signature date is required
+        </div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="button" class="btn btn-cancel" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn btn-draft" (click)="saveDraft()">Save as Draft</button>
+      <button type="submit" class="btn btn-submit" [disabled]="!medicalRecordForm.valid">Submit Record</button>
+    </div>
+  </form>
+</div>
+
+<!-- Success Modal -->
+<app-success-dialog 
+  *ngIf="showSuccessModal" 
+  [title]="'Success!'" 
+  [message]="successMessage" 
+  (closed)="onCloseSuccessModal()">
+</app-success-dialog>

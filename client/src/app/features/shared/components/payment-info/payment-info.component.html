@@ -1,0 +1,89 @@
+<div class="payment-container">
+  <div class="payment-card">
+    <div class="header">
+      <h2>Complete Your Payment</h2>
+      <div class="progress-dots">
+        <div class="dot"></div>
+        <div class="dot active"></div>
+      </div>
+    </div>
+
+    <form class="payment-form" [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+      <div class="form-group full-width">
+        <label for="cardNumber">Card Number</label>
+        <div class="input-with-icon">
+          <i class="card-icon"></i>
+          <input
+            type="text"
+            id="cardNumber"
+            formControlName="cardNumber"
+            placeholder="1234 5678 9012 3456"
+            [attr.maxlength]="19"
+            (input)="formatCardNumber($event)">
+        </div>
+        <div class="error-message" *ngIf="paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched">
+          Please enter a valid 16-digit card number
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="expiryDate">Expiry Date</label>
+          <div class="input-with-icon">
+            <input
+              type="text"
+              id="expiryDate"
+              formControlName="expiryDate"
+              placeholder="MM/YY"
+              [attr.maxlength]="5"
+              (input)="formatExpiryDate($event)">
+          </div>
+          <div class="error-message" *ngIf="expiryDateError">
+            {{ expiryDateError }}
+          </div>
+          <div class="error-message" *ngIf="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched && !expiryDateError">
+            Please enter a valid expiry date
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="cvc">CVV</label>
+          <div class="input-with-icon">
+            <input
+              type="text"
+              id="cvc"
+              formControlName="cvc"
+              placeholder="123"
+              [attr.maxlength]="3">
+          </div>
+          <div class="error-message" *ngIf="paymentForm.get('cvc')?.invalid && paymentForm.get('cvc')?.touched">
+            Please enter a valid 3-digit CVV
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row">
+          <span class="description">
+            <ng-container *ngIf="subscriptionType === 'trial'">
+              Free Trial (30 days)
+            </ng-container>
+            <ng-container *ngIf="subscriptionType === 'premium'">
+              Premium Subscription
+              <div class="user-details">{{ userCount }} users</div>
+            </ng-container>
+          </span>
+          <span class="amount">R{{ subscriptionPrice }}</span>
+        </div>
+        <div class="total-row">
+          <span class="total-label">Total</span>
+          <span class="total-amount">R{{ subscriptionPrice }}</span>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-button" [disabled]="!paymentForm.valid">
+        Pay R{{ subscriptionPrice }}
+      </button>
+    </form>
+  </div>
+</div>

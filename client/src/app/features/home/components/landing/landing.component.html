@@ -1,0 +1,68 @@
+<div class="landing-page">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <span style="font-weight: bold">Med</span>Secura</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto" style="display: flex; gap: 2rem">
+          <li class="nav-item">
+            <a class="nav-link text-hover text-white fw-bold" href="#bnft"
+              >Benefits</a
+            >
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="#abt">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero-section d-flex align-items-center text-center">
+    <div class="container">
+      <h1 class="display-4 fw-bold text-white">
+        The Future of <br />
+        Healthcare <br />
+        Management
+      </h1>
+      <p class="lead text-white">
+        Transform your medical practice with our comprehensive digital
+        healthcare platform. <br />
+        Secure, efficient, and designed for modern healthcare professionals.
+      </p>
+      <button class="get_started" routerLink="login">Get Started</button>
+    </div>
+  </div>
+
+  <!-- Scroll Down Indicator -->
+  <div class="scroll-down text-center">
+    <a href="#bnft"> <i class="bi bi-chevron-down text-white"></i></a>
+  </div>
+</div>
+
+<button
+  [ngClass]="{ 'show-scroll': showScroll }"
+  (click)="scrollToTop()"
+  class="scroll-to-top"
+  aria-label="Scroll to top"
+>
+  <i class="bi bi-arrow-up"></i>
+</button>
+
+<app-benefits id="bnft" />
+<app-about id="abt" />

@@ -1,0 +1,94 @@
+<div class="dashboard-container">
+  <div class="sidebar">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="primary">Med</span><span class="secondary">Secura</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+        <i class="bi bi-grid-1x2-fill nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors-patient" routerLinkActive="active">
+        <i class="bi bi-people-fill nav-icon"></i>
+        <span>Patients</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors" routerLinkActive="active">
+        <i class="bi bi-person-badge-fill nav-icon"></i>
+        <span>Doctors</span>
+      </a>
+      <a class="nav-item" routerLink="/appointments" routerLinkActive="active">
+        <i class="bi bi-calendar2-week-fill nav-icon"></i>
+        <span>Appointments</span>
+      </a>
+      <a class="nav-item" routerLink="/settings" routerLinkActive="active">
+        <i class="bi bi-gear-fill nav-icon"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="logout-section">
+      <a class="logout-button" (click)="logout()">
+        <i class="bi bi-box-arrow-right nav-icon"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <header class="header">
+      <h1 class="title">Doctors List</h1>
+      <button class="add-staff-btn" (click)="addNewDoctor()">
+        <i class="bi bi-plus"></i>Add New Doctor
+      </button>
+    </header>
+
+    <div class="staff-grid">
+      <div class="staff-card" *ngFor="let doctor of doctors; let i = index">
+        <div class="role-badge">Doctor</div>
+        <div class="card-actions">
+          <button class="action-btn edit-btn" (click)="editStaff(doctor, i)">
+            <i class="bi bi-pencil-fill"></i>
+          </button>
+          <button class="action-btn delete-btn" (click)="deleteStaff(i)">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </div>
+        <div class="card-header">
+          <h2>{{doctor.name}}</h2>
+          <div class="specialization">
+            <i class="bi bi-shield-fill-check"></i>{{doctor.specialization}}
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="info-item">
+            <div class="info-label">
+              <i class="bi bi-envelope-fill"></i>Email
+            </div>
+            <div class="info-value">{{doctor.email}}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="bi bi-telephone-fill"></i>Contact
+            </div>
+            <div class="info-value">{{doctor.phone}}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="bi bi-geo-alt-fill"></i>Address
+            </div>
+            <div class="info-value">{{doctor.address}}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="bi bi-award-fill"></i>Qualifications
+            </div>
+            <div class="info-value">{{doctor.qualifications}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

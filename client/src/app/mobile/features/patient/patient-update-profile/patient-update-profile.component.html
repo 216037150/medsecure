@@ -1,0 +1,62 @@
+<div class="profile-container">
+  <app-back-button routerLink="/mobile/patient-profile"/>
+  <app-navbar/>
+  <div class="content">
+    <div class="profile-image-container">
+      <label for="file-upload" class="image-preview" [class.has-image]="selectedImage" (click)="triggerFileInput()">
+        <div class="upload-placeholder" *ngIf="!selectedImage">
+          <i class="bi bi-person"></i>
+          <span>Upload Photo</span>
+        </div>
+        <img *ngIf="selectedImage" [src]="selectedImage" alt="Profile">
+      </label>
+      <label for="file-upload" class="edit-icon">
+        <i class="bi bi-camera"></i>
+      </label>
+      <input type="file" id="file-upload" (change)="onFileSelected($event)" accept="image/*" #fileInput>
+    </div>
+
+    <form class="profile-form" (ngSubmit)="updateProfile()">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" [(ngModel)]="profileData.fullName" name="fullName" class="form-input" required>
+      </div>
+  
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" [(ngModel)]="profileData.phoneNumber" name="phoneNumber" class="form-input" required>
+      </div>
+  
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="profileData.email" name="email" class="form-input" required>
+      </div>
+  
+      <button type="submit" class="update-button" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Update Profile</span>
+        <span *ngIf="isLoading">
+          <i class="bi bi-arrow-repeat spinning"></i> Updating...
+        </span>
+      </button>
+    </form>
+
+    <div class="modal-overlay" *ngIf="showSuccessModal">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="checkmark-circle">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h2 class="modal-title">Update Successful</h2>
+          <p class="modal-subtitle">
+            Your Profile has been updated
+          </p>
+          <button (click)="closeSuccessModal()" class="done-button">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

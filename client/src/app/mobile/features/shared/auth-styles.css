@@ -1,0 +1,141 @@
+/* --- Shared Authentication Container for both Login and Register Pages --- */
+.auth-container {
+    width: 90%;
+    max-width: 400px;
+    margin: 0 auto;         /* Center horizontally */
+    padding: 40px 30px;      /* Consistent padding around the container */
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-out;
+    text-align: center;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* --- Login Page Styles --- */
+  /* Remove or comment out container styles that conflict with .auth-container */
+  /*
+  .login-container {
+    min-height: 1vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    padding: 2rem;
+  }
+  */
+  
+  /* Instead, in login.component.html wrap your content like: 
+     <div class="login-container auth-container"> ... </div>
+     (You can optionally add any login-specific styles in .login-container if needed.) */
+  
+  
+  /* --- Register Page Styles --- */
+  /* Remove container-specific spacing so that the shared style is used */
+  /*
+  .register-page {
+    width: 90%;
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 40px 30px 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-out;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+  */
+  
+  /* Instead, in register.component.html wrap your content like: 
+     <div class="register-page auth-container"> ... </div>
+  */
+  
+  
+  /* --- The Rest of Your CSS (unchanged) --- */
+  
+  .error-message {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .error-message i {
+    position: static;
+    transform: none;
+  }
+  
+  .spin {
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 8px;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Login Card (if used inside the login page content) */
+  .login-card {
+    /* You may keep login-specific styles here if needed */
+  }
+  
+  /* Example of media queries */
+  @media screen and (max-width: 768px) {
+    .auth-container {
+      width: 95%;
+      padding: 30px 20px;
+    }
+  }
+  
+  /* --- The remaining styles for your inputs, buttons, etc., remain unchanged --- */
+  
+  /* Example: Bottom Navigation */
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .nav-item.active {
+    color: #14B8A6;
+  }
+  
+  /* (Include any other styles from your provided code as needed) */
+  

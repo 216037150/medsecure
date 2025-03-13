@@ -1,0 +1,152 @@
+<div class="appointment-container">
+  <app-back-button routerLink="/patient-dashboard" />
+  <h1 class="header-title">Book Appointment</h1>
+
+  <app-navbar />
+
+  <div class="availableTimeSlots">
+    <h1>My Doctor(s)</h1>
+  </div>
+
+  <!-- Doctor cards display instead of table -->
+  <div class="doctor-cards">
+    @for (doctor of myDoctors(); track doctor.id) {
+      <div class="doctor-card" [class.selected]="selectedDoctorId === doctor.id">
+        <div class="doctor-card-header">
+          <i class="bi bi-person-badge"></i> Doctor
+        </div>
+        <div class="doctor-card-body">
+          <div class="doctor-name">Dr. {{doctor.firstname}} {{doctor.lastname || ''}}</div>
+          <div class="doctor-email">{{doctor.email}}</div>
+          <button class="view-availability-btn" (click)="toggleDoctorAvailability(doctor.id)">
+            <i class="bi" [class.bi-calendar-check]="selectedDoctorId !== doctor.id" [class.bi-calendar-x]="selectedDoctorId === doctor.id"></i>
+            {{ selectedDoctorId === doctor.id ? 'Close Availability' : 'View Availability' }}
+          </button>
+        </div>
+      </div>
+    }
+    
+    <!-- Empty state for no doctors -->
+    @if (myDoctors().length === 0) {
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="bi bi-clipboard-x"></i>
+        </div>
+        <h3>No Doctors Found</h3>
+        <p>You don't have any doctors assigned to your account yet.</p>
+      </div>
+    }
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div class="message-container" *ngIf="bookingSuccess || bookingError">
+    <div class="message success" *ngIf="bookingSuccess">
+      <i class="bi bi-check-circle-fill"></i>
+      Appointment booked successfully!
+    </div>
+    <div class="message error" *ngIf="bookingError">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      {{bookingError}}
+    </div>
+  </div>
+
+  <!-- Date-grouped availability slots -->
+  <div class="availability-section" *ngIf="groupedAvailability && groupedAvailability.length > 0 && selectedDoctorId">
+    <h1>Doctor Availability</h1>
+    
+    <div class="date-group-container" *ngFor="let dateGroup of groupedAvailability; let i = index">
+      <div class="date-dropdown-header" [class.active]="openDateGroups[i]" (click)="toggleDateGroup(i)">
+        <div class="date-title">
+          <i class="bi bi-calendar-event"></i>
+          {{formatDateHeader(dateGroup.date)}}
+          <span class="slot-count">{{dateGroup.slots.length}} slots</span>
+        </div>
+        <i class="bi bi-chevron-down chevron-icon" [class.active]="openDateGroups[i]"></i>
+      </div>
+      <div class="date-dropdown-content" [class.active]="openDateGroups[i]">
+        <div class="time-slots-grid">
+          @for (slot of dateGroup.slots; track slot.id) {
+            <div class="time-slot-item">
+              <div class="time-slot-info">
+                <div class="time-slot-range">
+                  {{formatTime(slot.start_time)}} - {{formatTime(slot.end_time)}}
+                </div>
+                <div class="time-slot-status" 
+                     [class.available]="isTimeSlotAvailable(slot.doctor_id, slot.date, slot.start_time)"
+                     [class.booked]="!isTimeSlotAvailable(slot.doctor_id, slot.date, slot.start_time)">
+                  {{isTimeSlotAvailable(slot.doctor_id, slot.date, slot.start_time) ? 'Available' : 'Booked'}}
+                </div>
+              </div>
+              <button class="book-slot-btn"
+                      [disabled]="!isTimeSlotAvailable(slot.doctor_id, slot.date, slot.start_time)"
+                      (click)="bookAppointment(slot)">
+                Book
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Original table view as fallback -->
+  <div class="availability-table-container" *ngIf="showTableView && doctorAvailability().length > 0 && selectedDoctorId">
+    <div class="table-container">
+      <table class="availability-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of doctorAvailability(); track item.id) {
+          <tr>
+            <td>{{formatDate(item.date)}}</td>
+            <td>{{formatTime(item.start_time)}}</td>
+            <td>{{formatTime(item.end_time)}}</td>
+            <td>
+              <span class="status" [class.available]="isTimeSlotAvailable(item.doctor_id, item.date, item.start_time)" 
+                    [class.booked]="!isTimeSlotAvailable(item.doctor_id, item.date, item.start_time)">
+                {{isTimeSlotAvailable(item.doctor_id, item.date, item.start_time) ? 'Available' : 'Booked'}}
+              </span>
+            </td>
+            <td>
+              <button 
+                [disabled]="!isTimeSlotAvailable(item.doctor_id, item.date, item.start_time)"
+                [class.disabled]="!isTimeSlotAvailable(item.doctor_id, item.date, item.start_time)"
+                (click)="bookAppointment(item)">
+                Book
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- No availability message -->
+  <div class="no-availability" *ngIf="doctorAvailability().length === 0 && selectedDoctorId">
+    <div class="loading-indicator" *ngIf="isLoading"></div>
+    <ng-container *ngIf="!isLoading">
+      <div class="empty-state-icon">
+        <i class="bi bi-calendar-x"></i>
+      </div>
+      <h3>No Availability Found</h3>
+      <p>This doctor doesn't have any available slots at the moment. Please select another doctor or check back later.</p>
+    </ng-container>
+  </div>
+
+  <!-- Empty state when no doctor is selected -->
+  <div class="empty-state" *ngIf="!selectedDoctorId && myDoctors().length > 0 && !isFirstLoad">
+    <div class="empty-state-icon">
+      <i class="bi bi-person-lines-fill"></i>
+    </div>
+    <h3>Select a Doctor</h3>
+    <p>Please select a doctor to view their availability.</p>
+  </div>
+</div>

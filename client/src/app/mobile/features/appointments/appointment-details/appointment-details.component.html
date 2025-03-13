@@ -1,0 +1,74 @@
+<div class="appointment-screen">
+  <app-back-button routerLink="/appointment-booking"/>
+  <h1 class="title">Appointment Details</h1>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-alert">
+    <span>{{ error }}</span>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Processing your request...</p>
+  </div>
+
+  <div class="content" *ngIf="!isLoading">
+    <div class="doctor-info">
+      <img [src]="doctorImage" alt="Doctor" class="doctor-image">
+      <div class="doctor-details">
+        <h2>{{appointment?.doctorName}}</h2>
+        <p class="subtitle">{{appointment?.specialization || 'General Practitioner'}}</p>
+      </div>
+    </div>
+
+    <div *ngIf="appointment; else noAppointment">
+      <div class="details-grid">
+        <div class="detail-row">
+          <span class="label">Date</span>
+          <span class="value">{{ formatDate(appointment.appointmentDate) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Time</span>
+          <span class="value">{{ formatTime(appointment.appointmentTime) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Duration</span>
+          <span class="value">{{ appointment.durationMinutes }} minutes</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Booking Status</span>
+          <span class="value status" [style.color]="getStatusColor(appointment.status)">
+            {{ appointment.status }}
+          </span>
+        </div>
+      </div>
+
+      <div class="problem-section">
+        <h3>Medical Concern</h3>
+        <p class="problem-text">{{ appointment.reasonForVisit }}</p>
+      </div>
+
+      <div class="notes-section" *ngIf="appointment.doctorNotes">
+        <h3>Doctor's Notes</h3>
+        <p class="notes-text">{{ appointment.doctorNotes }}</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons" *ngIf="appointment.status === 'Pending' || appointment.status === 'Approved'">
+        <button class="cancel-button" (click)="cancelAppointment()" [disabled]="isLoading">
+          {{ isLoading ? 'Cancelling...' : 'Cancel Appointment' }}
+        </button>
+      </div>
+    </div>
+
+    <ng-template #noAppointment>
+      <div class="no-appointment">
+        <p>No appointment details available.</p>
+        <button routerLink="/mobile/appointment-booking" class="book-button">Book an Appointment</button>
+      </div>
+    </ng-template>
+  </div>
+
+  <app-navbar />
+</div>

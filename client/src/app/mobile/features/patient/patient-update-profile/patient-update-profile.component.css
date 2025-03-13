@@ -1,0 +1,263 @@
+.profile-container {
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: white;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  position: relative;
+  padding: 0;
+}
+
+.content {
+  padding: 20px;
+  margin-top: 15px;
+}
+  
+.back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color:  #199A8E;
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+  
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  animation: slideUp 0.3s ease-out;
+}
+  
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+  
+.checkmark-circle {
+  width: 80px;
+  height: 80px;
+  background-color: #F0FDFA;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+  
+.checkmark-circle svg {
+  color: #14B8A6;
+}
+  
+.modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+  
+.modal-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+.done-button {
+  width: 100%;
+  padding: 16px;
+  background-color: #14B8A6;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.profile-image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+  
+.image-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px dashed #199A8E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.image-preview.has-image {
+  border: 2px solid #199A8E;
+}
+  
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+  
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6c757d;
+}
+  
+.upload-placeholder i {
+  font-size: 32px;
+}
+  
+.edit-icon {
+  position: absolute;
+  bottom: 5px;
+  right: calc(50% - 65px);
+  background: #199A8E;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+  
+.edit-icon:hover {
+  transform: scale(1.1);
+}
+  
+#file-upload {
+  display: none;
+}
+
+.profile-form {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 334px;
+}
+  
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+  
+.form-group label {
+  font-size: 14px;
+  color: #333;
+}
+  
+.form-input {
+  padding: 12px;
+  border: 1px solid  #00A693;
+  border-radius: 100px;
+  font-size: 16px;
+  color: #333;
+  background-color: #F9FCFF; 
+}
+  
+.form-input:focus {
+  outline: none;
+  border-color: #00A693;
+  background-color: #E9F6FE; 
+}
+  
+.update-button {
+  background-color: #00A693;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  padding: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 40px;
+  transition: background-color 0.3s;
+}
+  
+.update-button:hover:not([disabled]) {
+  background-color: #008577;
+}
+
+.update-button[disabled] {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Spinning animation for loading indicator */
+.spinning {
+  animation: spin 1s infinite linear;
+  display: inline-block;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .image-preview {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .edit-icon {
+    right: calc(50% - 50px);
+    width: 30px;
+    height: 30px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+}

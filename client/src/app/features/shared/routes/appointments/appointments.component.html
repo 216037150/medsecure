@@ -1,0 +1,285 @@
+<div class="page-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="primary">Med</span><span class="secondary">Secura</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+        <i class="bi bi-grid-1x2-fill nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors-patient" routerLinkActive="active">
+        <i class="bi bi-people-fill nav-icon"></i>
+        <span>Patients</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors" routerLinkActive="active">
+        <i class="bi bi-person-badge-fill nav-icon"></i>
+        <span>Doctors</span>
+      </a>
+      <a class="nav-item" routerLink="/appointments" routerLinkActive="active">
+        <i class="bi bi-calendar2-week-fill nav-icon"></i>
+        <span>Appointments</span>
+      </a>
+      <a class="nav-item active" routerLink="/settings" routerLinkActive="active">
+        <i class="bi bi-gear-fill nav-icon"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="logout-section">
+      <a class="logout-button" (click)="logout()">
+        <i class="bi bi-box-arrow-right nav-icon"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-card">
+      <div class="card-header">
+        <h1>Appointments Management</h1>
+        <div class="header-actions">
+          <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              placeholder="Search appointments..."
+              [(ngModel)]="searchTerm"
+              (input)="handleSearchInput($event)"
+            />
+          </div>
+          <div class="action-buttons">
+            <button class="btn primary" (click)="openAvailabilityModal()">
+              <i class="bi bi-calendar-plus"></i>
+              Set Availability
+            </button>
+            <button class="btn secondary" (click)="openViewAvailabilityModal()">
+              <i class="bi bi-calendar-week"></i>
+              View Availability
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appointments Section -->
+      <div class="table-section">
+        <div class="section-header">
+          <div class="section-header-content">
+            <h2>My Appointments</h2>
+            <div class="header-actions">
+              <div class="filter-group">
+                <label>View:</label>
+                <select [(ngModel)]="appointmentViewFilter" (change)="filterAppointments()">
+                  <option value="all">All</option>
+                  <option value="today">Today</option>
+                  <option value="upcoming">Upcoming</option>
+                  <option value="past">Past</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Status:</label>
+                <select [(ngModel)]="filter" (change)="filterAppointments()">
+                  <option value="all">All</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Sort:</label>
+                <select [(ngModel)]="appointmentSortOrder" (change)="sortAppointments()">
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appointment List -->
+        <div class="date-groups">
+          @if (filteredAppointments().length === 0) {
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="bi bi-calendar-x"></i>
+              </div>
+              <h3>No Appointments Found</h3>
+              <p>There are no appointments matching your current filters.</p>
+            </div>
+          } @else {
+            @for (dateGroup of groupedAppointments(); track dateGroup.date) {
+              <div class="date-group">
+                <div class="date-header" (click)="toggleAppointmentDateGroup(dateGroup.date)">
+                  <i class="bi" [class.bi-chevron-down]="isAppointmentDateGroupOpen(dateGroup.date)" [class.bi-chevron-right]="!isAppointmentDateGroupOpen(dateGroup.date)"></i>
+                  <h3>{{ dateGroup.date }}</h3>
+                  <span class="appointment-count">{{ dateGroup.appointments.length }} appointments</span>
+                </div>
+                @if (isAppointmentDateGroupOpen(dateGroup.date)) {
+                  <div class="table-container" [@expandCollapse]>
+                    <div class="table-header">
+                      <div class="table-cell">Time</div>
+                      <div class="table-cell">Patient</div>
+                      <div class="table-cell">Status</div>
+                      <div class="table-cell">Actions</div>
+                    </div>
+                    @for (appointment of dateGroup.appointments; track $index) {
+                      <div class="table-row">
+                        <div class="table-cell">{{ appointment.time }}</div>
+                        <div class="table-cell">{{ appointment.patientName }}</div>
+                        <div class="table-cell">
+                          <span class="status-badge" [ngClass]="appointment.status.toLowerCase()">{{ appointment.status }}</span>
+                        </div>
+                        <div class="table-cell">
+                          <div class="action-links">
+                            @if (appointment.status === 'Pending') {
+                              <a class="action-link primary" (click)="updateAppointmentStatus(appointment.id, 'Approved')">
+                                <i class="bi bi-check-circle"></i>
+                                Accept
+                              </a>
+                              <a class="action-link danger" (click)="updateAppointmentStatus(appointment.id, 'Cancelled')">
+                                <i class="bi bi-x-circle"></i>
+                                Reject
+                              </a>
+                            }
+                            @if (appointment.status === 'Approved') {
+                              <a class="action-link primary" (click)="updateAppointmentStatus(appointment.id, 'Completed')">
+                                <i class="bi bi-check-square"></i>
+                                Complete
+                              </a>
+                              <a class="action-link danger" (click)="updateAppointmentStatus(appointment.id, 'Cancelled')">
+                                <i class="bi bi-x-circle"></i>
+                                Cancel
+                              </a>
+                            }
+                            @if (appointment.status === 'Completed' || appointment.status === 'Cancelled') {
+                              <span class="text-muted">No actions available</span>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Set Availability Modal -->
+<div class="modal" [class.show]="showSetAvailabilityModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Set Availability</h2>
+      <button class="close-btn" (click)="closeSetAvailabilityModal()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="availability-form">
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input
+            type="date"
+            id="date"
+            [(ngModel)]="availabilityDate"
+            name="date"
+            class="form-control"
+            [min]="getCurrentDate()"
+          />
+        </div>
+        <div class="form-group">
+          <label for="startTime">Start Time</label>
+          <input
+            type="time"
+            id="startTime"
+            [(ngModel)]="startTime"
+            name="startTime"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="endTime">End Time</label>
+          <input
+            type="time"
+            id="endTime"
+            [(ngModel)]="endTime"
+            name="endTime"
+            class="form-control"
+          />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn secondary" (click)="closeSetAvailabilityModal()">Cancel</button>
+          <button type="submit" class="btn primary" (click)="onSetSchedule()">Set Availability</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- View Availability Modal -->
+<div class="modal" [class.show]="showViewAvailabilityModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>My Availability</h2>
+      <button class="close-btn" (click)="closeViewAvailabilityModal()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="date-groups">
+        @if (groupedAvailability().length === 0) {
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="bi bi-calendar-x"></i>
+            </div>
+            <h3>No Availability Set</h3>
+            <p>You haven't set any availability slots yet.</p>
+          </div>
+        } @else {
+          @for (dateGroup of groupedAvailability(); track dateGroup.date) {
+            <div class="date-group">
+              <div class="date-header" (click)="toggleDateGroup(dateGroup.date)">
+                <i class="bi" [class.bi-chevron-down]="isDateGroupOpen(dateGroup.date)" [class.bi-chevron-right]="!isDateGroupOpen(dateGroup.date)"></i>
+                <h3>{{ dateGroup.date }}</h3>
+                <span class="slot-count">{{ dateGroup.slots.length }} slots</span>
+              </div>
+              @if (isDateGroupOpen(dateGroup.date)) {
+                <div class="table-container" [@expandCollapse]>
+                  <div class="table-header">
+                    <div class="table-cell">Start Time</div>
+                    <div class="table-cell">End Time</div>
+                    <div class="table-cell">Actions</div>
+                  </div>
+                  @for (slot of dateGroup.slots; track $index) {
+                    <div class="table-row">
+                      <div class="table-cell">{{ slot.start_time }}</div>
+                      <div class="table-cell">{{ slot.end_time }}</div>
+                      <div class="table-cell">
+                        <div class="action-links">
+                          <a class="action-link danger" (click)="removeAvailability(slot.id)">
+                            <i class="bi bi-trash"></i>
+                            Remove
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>

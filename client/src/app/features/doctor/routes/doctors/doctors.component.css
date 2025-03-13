@@ -1,0 +1,449 @@
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-light);
+}
+
+.sidebar {
+  width: 256px;
+  background: var(--bg-white);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 10;
+}
+
+.logo-section {
+  height: 70px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.logo {
+  font-size: 22.88px;
+  line-height: 32px;
+}
+
+.logo .primary {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.logo .secondary {
+  color: var(--primary-color-80);
+  font-weight: 400;
+}
+
+.nav-menu {
+  padding: 16px 0;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 24px;
+  color: var(--text-primary);
+  font-size: 15.38px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background: var(--bg-light);
+}
+
+.nav-item.active {
+  background: var(--bg-icon-light);
+  color: var(--primary-color);
+}
+
+.nav-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: var(--text-secondary);
+}
+
+.active .nav-icon {
+  color: var(--primary-color);
+}
+
+.logout-section {
+  height: 44px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  font-size: 15.25px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.header {
+  background: var(--bg-white);
+  padding: 16px 24px;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  position: sticky;
+  z-index: 5;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.add-staff-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-staff-btn:hover {
+  background: var(--primary-color-80);
+  transform: translateY(-1px);
+}
+
+.add-staff-btn i {
+  font-size: 18px;
+}
+
+/* Section Headers */
+.section-header {
+  margin: 24px 0 12px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Grid layout */
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 0 1px;
+  margin-bottom: 24px;
+}
+
+/* Staff card common styles */
+.staff-card {
+  background: var(--bg-white);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.staff-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Role badge and actions container */
+.role-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--primary-color);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+.role-badge.doctor {
+  background-color: rgba(25, 154, 142, 0.1);
+}
+
+.role-badge.receptionist {
+  background-color: rgba(25, 154, 142, 0.1);
+}
+
+/* Card actions */
+.card-actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+.staff-card:hover .card-actions {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.staff-card:hover .role-badge {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn i {
+  font-size: 14px;
+  color: white;
+}
+
+.edit-btn {
+  background: rgba(0, 38, 38, 0.055);
+  color: #199A8E;
+}
+
+.delete-btn {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626; 
+}
+
+.edit-btn:hover {
+  background: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Card headers */
+.card-header {
+  padding: 24px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-color-80));
+  color: white;
+}
+
+.doctor-header {
+  background: linear-gradient(135deg, #199A8E, #147a70);
+}
+
+.receptionist-header {
+  background: linear-gradient(135deg, #199A8E, #147a70);
+}
+
+.card-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: white;
+  line-height: 1.4;
+  padding-right: 40px; 
+}
+
+.specialization {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.specialization i {
+  font-size: 14px;
+  margin-right: 8px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Card content */
+.card-content {
+  padding: 24px;
+}
+
+.info-item {
+  margin-bottom: 16px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.info-label i {
+  color: var(--primary-color);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.info-value {
+  color: var(--text-primary);
+  font-size: 14px;
+  padding-left: 24px;
+}
+
+/* Responsive */
+@media (min-width: 1400px) {
+  .staff-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .staff-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .staff-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .staff-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
+
+  .header {
+    position: static;
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .add-staff-btn {
+    justify-content: center;
+  }
+
+  .staff-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px;
+  }
+
+  .nav-item {
+    width: auto;
+    padding: 8px 16px;
+  }
+  
+  .logo-section {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-content {
+    padding: 12px;
+  }
+
+  .staff-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .staff-card {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 12px;
+  }
+
+  .header {
+    padding: 12px;
+  }
+
+  .card-header {
+    padding: 16px;
+  }
+
+  .card-content {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,62 @@
+.bottom-nav {
+    position: fixed;
+    bottom: 0; 
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 22px;
+    background-color: white !important;
+    backdrop-filter: none !important;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+  }
+  
+  .nav-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: #c0c0c0;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+  }
+  
+  .nav-button i {
+    font-size: 20px;
+  }
+  
+  .nav-button.active {
+    color: #00A693;
+    background-color: #e6f7f5;
+  }
+  
+  .nav-label {
+    font-size: 14px;
+  }
+  
+  .nav-button:not(.active) .nav-label {
+    display: none;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  
+  @media (max-width: 375px) {
+    .profile-container {
+        padding: 15px;
+    }
+    
+    .nav-button {
+        padding: 6px 12px;
+    }
+  }

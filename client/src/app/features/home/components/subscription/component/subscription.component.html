@@ -1,0 +1,153 @@
+<div class="subscription-container">
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>Transform Your Practice with Our Healthcare Platform</h1>
+      <p>Join thousands of healthcare professionals who trust our platform</p>
+      <button class="benefits-button" (click)="showBenefits()">View Benefits</button>
+    </div>
+  </div>
+
+  <div class="plans-section">
+    <h2>Choose Your Plan</h2>
+    <div class="plans-container">
+      <!-- Free Trial Plan -->
+      <div class="plan-card">
+        <h3>Free Trial</h3>
+        <p class="plan-description">Experience our platform risk-free</p>
+        <div class="price-container">
+          <span class="price">R0</span>
+          <span class="price-period">/month</span>
+        </div>
+        <div class="features-list">
+          <div class="feature">
+            <i class="bi bi-star-fill feature-icon"></i>
+            <span>Try all premium features for 30 days</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-shield-lock-fill feature-icon"></i>
+            <span>Advanced security</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-cloud-arrow-up-fill feature-icon"></i>
+            <span>Cloud storage</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-people-fill feature-icon"></i>
+            <span>Scalable user licenses</span>
+          </div>
+        </div>
+        <button class="trial-button" (click)="startFreeTrial()">Start Free Trial</button>
+      </div>
+
+      <!-- Premium Plan -->
+      <div class="plan-card premium">
+        <h3>Premium</h3>
+        <p class="plan-description">Full features for your practice</p>
+        <div class="price-container">
+          <span class="price">R{{totalPrice}}</span>
+          <span class="price-period">/month</span>
+
+          <div class="license-info">
+            Base subscription includes license for up to 5 doctors (R500/month)
+          </div>
+
+          <!-- User Count Controls -->
+          <div class="user-count-controls">
+            <label>Number of Users</label>
+            <div class="counter-container">
+              <button
+                class="counter-button"
+                [class.hidden]="totalPrice === basePrice"
+                (click)="decrementPrice()"
+                [disabled]="totalPrice === basePrice">
+                -
+              </button>
+
+              <!-- Editable User Count -->
+              <div class="user-count-wrapper" (click)="startEditing()">
+                <span class="user-count" *ngIf="!isEditing">{{userCount}}</span>
+                <input
+                  *ngIf="isEditing"
+                  type="number"
+                  class="user-count-input"
+                  [(ngModel)]="tempUserCount"
+                  (blur)="onUserCountBlur()"
+                  (keyup)="onUserCountKeyup($event)"
+                  min="{{MIN_USERS}}"
+                  [attr.placeholder]="userCount"
+                  #userInput
+                >
+              </div>
+
+              <button class="counter-button" (click)="incrementPrice()">
+                +
+              </button>
+            </div>
+            <p class="pricing-info">R100 per additional user/month</p>
+          </div>
+        </div>
+
+        <div class="features-list">
+          <div class="feature">
+            <i class="bi bi-star-fill feature-icon"></i>
+            <span>Premium features</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-shield-lock-fill feature-icon"></i>
+            <span>Advanced security</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-cloud-arrow-up-fill feature-icon"></i>
+            <span>Cloud storage</span>
+          </div>
+        </div>
+        <button class="subscribe-button" (click)="proceedToCheckout()">Subscribe Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Benefits Modal -->
+<div class="benefits-overlay" *ngIf="showingBenefits" (click)="hideBenefits()">
+  <div class="benefits-modal" (click)="$event.stopPropagation()">
+    <div class="benefits-header">
+      <h3>Key Benefits</h3>
+      <button class="close-modal" (click)="hideBenefits()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+    <div class="benefits-content">
+      <div class="benefit-card">
+        <i class="bi bi-file-earmark-medical-fill"></i>
+        <div class="benefit-text">
+          <h4>Digital Transformation</h4>
+          <p>Reduce paperwork by 50% and enhance patient care through efficient digital file management.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <i class="bi bi-shield-lock-fill"></i>
+        <div class="benefit-text">
+          <h4>Secure Management</h4>
+          <p>Save 10+ hours weekly with secure digital file handling, prioritizing both efficiency and data protection.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <i class="bi bi-calendar-check-fill"></i>
+        <div class="benefit-text">
+          <h4>Smart Scheduling</h4>
+          <p>Optimize appointments with our intelligent booking system while maintaining full control over your calendar.</p>
+        </div>
+      </div>
+
+      <div class="benefit-card">
+        <i class="bi bi-key-fill"></i>
+        <div class="benefit-text">
+          <h4>Flexible Licensing</h4>
+          <p>Start with our base subscription that includes a license key for up to 5 doctors (R500/month). Perfect for growing practices - add more users as your practice expands.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

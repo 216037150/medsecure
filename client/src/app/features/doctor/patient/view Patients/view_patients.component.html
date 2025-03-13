@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <div class="sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="primary">Med</span><span class="secondary">Secura</span>
+      </div>
+      <!-- <button class="mobile-menu-toggle" (click)="toggleSidebar()">
+        <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-list' : 'bi-x-lg'"></i>
+      </button> -->
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active" routerLink="/dashboard" routerLinkActive="active">
+        <i class="bi bi-grid-1x2-fill nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors-patient" routerLinkActive="active">
+        <i class="bi bi-people-fill nav-icon"></i>
+        <span>Patients</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors" routerLinkActive="active">
+        <i class="bi bi-person-badge-fill nav-icon"></i>
+        <span>Doctors</span>
+      </a>
+      <a class="nav-item" routerLink="/appointments" routerLinkActive="active">
+        <i class="bi bi-calendar2-week-fill nav-icon"></i>
+        <span>Appointments</span>
+      </a>
+      <a class="nav-item" routerLink="/settings" routerLinkActive="active">
+        <i class="bi bi-gear-fill nav-icon"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="logout-section">
+      <a class="logout-button" (click)="logout()">
+        <i class="bi bi-box-arrow-right nav-icon"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-card">
+      <div class="card-header">
+        <h1>My Patients</h1>
+        <button class="btn-primary" (click)="openAddPatientModal()">
+          <i class="bi bi-person-plus"></i>
+          Add Patient
+        </button>
+      </div>
+      <div class="search-section">
+        <div class="search-bar">
+          <i class="bi bi-search search-icon"></i>
+          <input type="text" placeholder="Search patients by name, email..." [(ngModel)]="searchQuery"
+            (input)="filterPatients()">
+        </div>
+      </div>
+
+      <!-- Patient table or empty state -->
+      <div class="patients-table-container">
+        <!-- Patient table when patients are available -->
+        <div *ngIf="filteredPatients().length > 0" class="patients-table">
+          <div class="table-header">
+            <div class="header-cell number-cell">#</div>
+            <div class="header-cell">First Name</div>
+            <div class="header-cell">Last Name</div>
+            <div class="header-cell">Email</div>
+            <div class="header-cell">Actions</div>
+          </div>
+          <div class="table-body">
+            @for (patient of filteredPatients(); track $index) {
+              <div class="table-row">
+                <div class="table-cell number-cell">{{ $index + 1 }}</div>
+                <div class="table-cell">{{ patient.firstname }}</div>
+                <div class="table-cell">{{ patient.lastname }}</div>
+                <div class="table-cell">{{ patient.email || 'No email available' }}</div>
+                <div class="table-cell">
+                  <div class="action-links">
+                    <a class="action-link danger" (click)="showDeleteConfirmation(patient)">
+                      <i class="bi bi-trash"></i>
+                      Remove
+                    </a>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Empty state when no patients are available -->
+        <div *ngIf="myPatients().length === 0" class="empty-state">
+          <div class="empty-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3>No patients yet</h3>
+          <p>You haven't added any patients to your list yet.</p>
+          <button class="btn-primary" (click)="openAddPatientModal()">
+            <i class="bi bi-person-plus"></i>
+            Add your first patient
+          </button>
+        </div>
+
+        <!-- No search results state -->
+        <div *ngIf="myPatients().length > 0 && filteredPatients().length === 0" class="empty-state">
+          <div class="empty-icon">
+            <i class="bi bi-search"></i>
+          </div>
+          <h3>No matches found</h3>
+          <p>No patients match your search term "{{ searchQuery }}"</p>
+          <button class="btn-outline" (click)="clearSearch()">
+            Clear search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Patient Modal -->
+  <div class="modal-overlay" *ngIf="showAddPatientModal" [class.show]="showAddPatientModal"
+    (click)="closeAddPatientModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Add New Patient</h2>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="patientEmail">Patient Email</label>
+          <input type="email" id="patientEmail" [(ngModel)]="newPatientEmail"
+            placeholder="Enter patient's email address" class="form-control" autocomplete="off"
+            [disabled]="addingPatient" spellcheck="false">
+        </div>
+        <!-- Success message -->
+        <div class="success-message" *ngIf="successMessage">
+          <i class="bi bi-check-circle-fill"></i>
+          {{ successMessage }}
+        </div>
+        <!-- Error message -->
+        <div class="error-message" *ngIf="errorMessage">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          {{ errorMessage }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" [disabled]="addingPatient" (click)="closeAddPatientModal()">Cancel</button>
+        <button class="btn-primary" [disabled]="addingPatient || !newPatientEmail" (click)="addPatient()">
+          <span *ngIf="addingPatient">
+            <i class="bi bi-arrow-repeat spinning"></i> Adding...
+          </span>
+          <span *ngIf="!addingPatient">Add Patient</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" *ngIf="showDeleteModal" [class.show]="showDeleteModal" (click)="cancelDelete()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Confirm Patient Removal</h2>
+        <i class="bi bi-x-lg"></i>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to remove this patient from your list?</p>
+        <p class="warning-text">This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+        <button class="btn-danger" (click)="confirmDelete()">Remove Patient</button>
+      </div>
+    </div>
+  </div>
+</div>

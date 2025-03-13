@@ -1,0 +1,149 @@
+<div class="dashboard-container">
+    <app-navbar/>
+    <!-- Header Section -->
+    <header class="header">
+      <div class="profile-pic-container">
+        <img 
+          [src]="profileImage || ''" 
+          alt="" 
+          class="profile-pic" 
+        />
+        @if (!profileImage) {
+          <div class="profile-pic-placeholder">
+            <i class="bi bi-person"></i>
+          </div>
+        }
+      </div>
+      <div class="welcome-container">
+        <h1 class="welcome-text">Welcome</h1>
+        <p class="patient-name">{{ userName }}</p>
+      </div>
+    </header>
+  
+    <!-- Slideshow Section -->
+    <div class="slideshow-container">
+      <div class="slides" [style.transform]="'translateX(-' + (currentSlideIndex * 100) + '%)'">
+        @for (slide of slides; track slide.title; let i = $index) {
+          <div class="slide" [class.active]="i === currentSlideIndex">
+            <div class="slide-content">
+              <div class="slide-info">
+                <h5>{{ slide.title }}</h5>
+                <p class="slide-text">{{ slide.description }}</p>
+                @if (slide.buttonText) {
+                  <button class="slide-button" (click)="navigateToBooking()">{{ slide.buttonText }}</button>
+                }
+              </div>
+              @if (slide.image) {
+                <img [src]="slide.image" [alt]="slide.title" class="slide-image" />
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  
+    <!-- Schedule Section -->
+    <!-- <div class="schedule-section">
+      <div class="schedule-header">
+        <h2 class="schedule-title">Upcoming Schedule</h2>
+        <span class="schedule-month">{{ currentMonth }}</span>
+      </div>
+  
+      <div class="dates-wrapper">
+        <div class="dates-scrollable" #datesContainer>
+          @for (date of dates; track date.fullDate) {
+            <div
+              class="date-item"
+              [class.active]="date === selectedDate"
+              [class.has-appointment]="hasAppointmentsForDate(date.fullDate)"
+              (click)="selectDate(date)"
+            >
+              <span class="date-day">{{ date.day }}</span>
+              <span class="date-weekday">{{ date.weekday }}</span>
+            </div>
+          }
+        </div>
+      </div>
+  
+      <div class="schedule-grid">
+        @if (selectedDate && hasAppointmentsForDate(selectedDate.fullDate)) {
+          <div class="appointments-list" *ngIf="selectedDate">
+            <ng-container *ngFor="let group of getGroupedAppointments(selectedDate.fullDate)">
+              <div class="appointment-time-group">
+                <h4 class="time-header">{{ formatTime(group.time) }}</h4>
+                <div class="appointments-group">
+                  <div class="appointment-card" *ngFor="let appointment of group.appointments; track appointment.appointmentId" (click)="navigateToAppointmentDetails(appointment)">
+                    <div class="appointment-content">
+                      <div class="doctor-info">
+                        <div class="doctor-name">Dr. {{ appointment.doctorName }}</div>
+                        <div class="doctor-specialization" *ngIf="appointment.specialization">
+                          {{ appointment.specialization }}
+                        </div>
+                      </div>
+                      <div class="appointment-time">{{ formatTime(appointment.appointmentTime) }}</div>
+                      <div class="appointment-status" [class]="getStatusClass(appointment.status)">
+                        {{ appointment.status }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        } @else {
+          <p class="no-appointments">No appointments scheduled for this date.</p>
+        }
+      </div>
+    </div>
+     -->
+    <!-- All Booked Appointments Section -->
+    <div class="all-appointments-section">
+      <div class="section-header">
+        <h2 class="section-title">All Booked Appointments</h2>
+        <div class="section-actions">
+          <button class="view-all-btn" routerLink="/mobile/schedule">
+            <i class="bi bi-calendar-check"></i> View Schedule
+          </button>
+        </div>
+      </div>
+      
+      <div class="appointments-container">
+        @if (allAppointments && allAppointments.length > 0) {
+          <div class="appointment-list">
+            @for (appointment of allAppointments; track appointment.appointmentId) {
+              <div class="booked-appointment-card" (click)="navigateToAppointmentDetails(appointment)">
+                <div class="appointment-date-badge">
+                  <span class="month">{{ getMonthShort(appointment.appointmentDate) }}</span>
+                  <span class="day">{{ getDayOfMonth(appointment.appointmentDate) }}</span>
+                </div>
+                <div class="appointment-details">
+                  <h3 class="doctor-name">Dr. {{ appointment.doctorName }}</h3>
+                  <div class="appointment-info">
+                    <span class="time">
+                      <i class="bi bi-clock"></i> {{ formatTime(appointment.appointmentTime) }}
+                    </span>
+                    <span class="specialization" *ngIf="appointment.specialization">
+                      <i class="bi bi-briefcase-medical"></i> {{ appointment.specialization }}
+                    </span>
+                  </div>
+                </div>
+                <div class="appointment-status-container">
+                  <span class="appointment-status-badge" [class]="getStatusClass(appointment.status)">
+                    {{ appointment.status }}
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="no-appointments-container">
+            <div class="empty-state">
+              <i class="bi bi-calendar-x empty-icon"></i>
+              <p>No appointments booked yet.</p>
+              <button class="book-now-btn" (click)="navigateToBooking()">Book an Appointment</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>

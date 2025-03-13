@@ -1,0 +1,43 @@
+<div class="subscription-confirmation">
+  <div class="confirmation-container" @fadeInUp>
+    <div class="confirmation-content">
+      <div *ngIf="loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Generating your license key...</p>
+      </div>
+
+      <div *ngIf="!loading && error" class="error-message">
+        <p>{{ error }}</p>
+        <button class="retry-button" (click)="retryGeneration()">
+          <i class="fas fa-sync-alt"></i> Retry
+        </button>
+      </div>
+
+      <div *ngIf="!loading && !error" class="success-content">
+        <h1>Thank you for your subscription!</h1>
+        <div class="license-details">
+          <h2>Your License Details</h2>
+          <div class="license-info">
+            <p><strong>Total Users:</strong> {{ totalUsers }}</p>
+            <p><strong>Remaining Users:</strong> {{ remainingUsers }}</p>
+            <div class="license-key-container">
+              <label>License Key:</label>
+              <div class="key-display">
+                <code>{{ licenseKey }}</code>
+                <button (click)="copyLicenseKey()" [class.copied]="copied">
+                  <i class="fas fa-copy"></i>
+                  {{ copied ? 'Copied!' : 'Copy' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="next-steps">
+          <p>Please save your license key in a secure location. You'll need it to activate the software.</p>
+          <button class="primary-button" (click)="goToDashboard()">Go to Dashboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

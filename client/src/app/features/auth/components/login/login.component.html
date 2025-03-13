@@ -1,0 +1,62 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <i class="bi bi-person"></i>
+      <h2>Welcome Back</h2>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <div class="input-container">
+          <i class="bi bi-envelope"></i>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email address"
+          />
+        </div>
+        <span class="validation-error" *ngIf="loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched">
+          Email is required
+        </span>
+        <span class="validation-error" *ngIf="loginForm.get('email')?.errors?.['email'] && loginForm.get('email')?.touched">
+          Invalid email format
+        </span>
+      </div>
+
+      <div class="form-group">
+        <div class="input-container">
+          <i class="bi bi-shield-lock"></i>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+          />
+        </div>
+        <span class="validation-error" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+          Password is required
+        </span>
+        <span class="validation-error" *ngIf="loginForm.get('password')?.errors?.['minlength'] && loginForm.get('password')?.touched">
+          Password must be at least 6 characters
+        </span>
+      </div>
+
+      <div class="remember-forgot">
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="bi bi-exclamation-circle"></i>
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="login-btn">
+        <i *ngIf="loading" class="bi bi-arrow-repeat spinner"></i>
+        <span>{{ loading ? 'Logging in...' : 'Login' }}</span>
+      </button>
+    </form>
+
+    <p class="register-link">
+      Don't have an account? <a routerLink="/register">Register</a>
+    </p>
+  </div>
+</div>

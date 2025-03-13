@@ -1,0 +1,53 @@
+
+<div class="info-page">
+
+  <div class="top">
+    <h1 class="skip"
+    *ngIf="index==0 || index==1" routerLink="/mobile/login">Skip</h1>
+
+      <app-info-slider *ngIf="index==0"
+      infoImg='images/1s.png'
+      heading='From Physical To Digital '
+      description='Digital file management has halved the 10+ hours doctors once spent on paperwork, freeing up more time for patient care!'
+      color="#199A8E"
+      (indexSwitch)="switch(0)"
+      />
+  
+    
+      <app-info-slider *ngIf="index==1"
+      infoImg='images/2s.png'
+      heading='Secure File Management'
+      description='Secure medical apps safeguard patient data with encryption, access controls, and multi-factor authentication.'
+      (indexSwitch)="switch(1)"
+      />
+  
+      <app-info-slider *ngIf="index==2"
+      infoImg='images/3s.png'
+        heading='Schedule your appointments'
+        description='Our App makes it simple to book appointments at your convenience'
+        (indexSwitch)="switch(2)"
+      />
+  
+      <div class="btn"
+      *ngIf="index==2">
+        <button routerLink="/mobile/login">Get Started</button>
+      </div>
+  
+  </div>
+ 
+      <div class="current-index">
+        <div class="index 1st"
+        (click)="switch(0)"
+        [ngClass]="{'clicked': index == 0}"
+        ></div>
+        <div class="index 2st"
+        (click)="switch(1)" 
+        [ngClass]="{'clicked': index == 1}"
+        ></div>
+        <div class="index 3st"
+        (click)="switch(2)"
+        [ngClass]="{'clicked': index == 2}"
+        ></div>
+       </div>
+  </div>
+

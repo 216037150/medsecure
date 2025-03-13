@@ -1,0 +1,146 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+
+  <div class="sidebar">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="primary">Med</span><span class="secondary">Secura</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active" routerLink="/dashboard" routerLinkActive="active">
+        <i class="bi bi-grid-1x2-fill nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors-patient" routerLinkActive="active">
+        <i class="bi bi-people-fill nav-icon"></i>
+        <span>Patients</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors" routerLinkActive="active">
+        <i class="bi bi-person-badge-fill nav-icon"></i>
+        <span>Doctors</span>
+      </a>
+      <a class="nav-item" routerLink="/appointments" routerLinkActive="active">
+        <i class="bi bi-calendar2-week-fill nav-icon"></i>
+        <span>Appointments</span>
+      </a>
+      <a class="nav-item" routerLink="/settings" routerLinkActive="active">
+        <i class="bi bi-gear-fill nav-icon"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="logout-section">
+      <a class="logout-button" (click)="logout()">
+        <i class="bi bi-box-arrow-right nav-icon"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="welcome-section">
+        <div class="profile-image">
+          <img [src]="doctorInfo?.profilePicture || '/hospital.svg'" alt="Doctor's profile picture" class="profile-pic">
+        </div>
+        <div class="welcome-text">
+          <h1><span class="greeting">Hello, Dr. </span>{{db.current_doctor()?.firstname}}</h1>
+          <p>You have {{stats.appointmentsToday}} appointments scheduled for today</p>
+          <div class="doctor-info" *ngIf="doctorInfo">
+            <p *ngIf="doctorInfo.specialization" class="specialization">
+              <i class="bi bi-award"></i> {{doctorInfo.specialization}}
+            </p>
+            <p *ngIf="doctorInfo.email" class="email">
+              <i class="bi bi-envelope" style="color: #199A8E;"></i> {{doctorInfo.email}}
+            </p>
+            <p *ngIf="doctorInfo.phoneNumber" class="phone">
+              <i class="bi bi-telephone"></i> {{doctorInfo.phoneNumber}}
+            </p>
+            <p *ngIf="doctorInfo.address" class="address">
+              <i class="bi bi-geo-alt"></i> {{doctorInfo.address}}
+            </p>
+            <p *ngIf="doctorInfo.bio" class="bio">
+              <i class="bi bi-file-person"></i> {{doctorInfo.bio}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of [
+        {label: 'Total Patients', value: stats.totalPatients, icon: 'bi-people-fill', route: '/doctors-patient'},
+        {label: 'Appointments Today', value: stats.appointmentsToday, icon: 'bi-calendar2-check-fill', route: '/appointments'},
+        {label: 'Upcoming Appointments', value: stats.pendingConsultations, icon: 'bi-clipboard2-pulse-fill', route: '/appointments'}
+      ]" (click)="navigateTo(stat.route)">
+        <div class="stat-info">
+          <span class="stat-label">{{stat.label}}</span>
+          <span class="stat-value">{{stat.value}}</span>
+        </div>
+        <div class="stat-icon">
+          <i class="bi {{stat.icon}}"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule and Alerts -->
+    <div class="info-grid">
+      <div class="schedule-card">
+        <div class="card-header">
+          <h2>Today's Schedule</h2>
+          <i class="bi bi-three-dots more-icon" (click)="navigateTo('/appointments')"></i>
+        </div>
+        <div class="appointments-list">
+          <div class="appointment-item" *ngFor="let appointment of appointments">
+            <span class="time">{{appointment.appointmentTime}}</span>
+            <div class="appointment-details">
+              <span class="patient-name">{{appointment.patientName}}</span>
+              <span class="appointment-type">{{appointment.reasonForVisit}}</span>
+            </div>
+            <div class="appointment-status" [class]="appointment.status">
+              <i class="bi" [ngClass]="{
+                'bi-check-circle-fill': appointment.status === 'Completed',
+                'bi-x-circle-fill': appointment.status === 'Cancelled',
+                'bi-clock-fill': appointment.status === 'Pending'
+              }"></i>
+              <span>{{appointment.status | titlecase}}</span>
+            </div>
+          </div>
+          <div *ngIf="appointments.length === 0" class="no-appointments">
+            No appointments scheduled for today
+          </div>
+        </div>
+      </div>
+
+      <div class="alerts-card">
+        <div class="card-header">
+          <h2>Recent Alerts</h2>
+          <i class="bi bi-three-dots more-icon"></i>
+        </div>
+        <div class="alerts-list">
+          <div class="alert-item" *ngFor="let alert of alerts">
+            <div class="alert-indicator" [class]="alert.type">
+              <i class="bi" [ngClass]="{
+                'bi-exclamation-circle-fill': alert.type === 'warning',
+                'bi-info-circle-fill': alert.type === 'info',
+                'bi-exclamation-triangle-fill': alert.type === 'error'
+              }"></i>
+            </div>
+            <div class="alert-details">
+              <span class="alert-message">{{alert.message}}</span>
+              <span class="alert-time">{{alert.time}}</span>
+            </div>
+          </div>
+          <div *ngIf="alerts.length === 0" class="no-alerts">
+            No recent alerts
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

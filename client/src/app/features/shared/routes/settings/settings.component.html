@@ -1,0 +1,194 @@
+<div class="page-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="primary">Med</span><span class="secondary">Secura</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+        <i class="bi bi-grid-1x2-fill nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors-patient" routerLinkActive="active">
+        <i class="bi bi-people-fill nav-icon"></i>
+        <span>Patients</span>
+      </a>
+      <a class="nav-item" routerLink="/doctors" routerLinkActive="active">
+        <i class="bi bi-person-badge-fill nav-icon"></i>
+        <span>Doctors</span>
+      </a>
+      <a class="nav-item" routerLink="/appointments" routerLinkActive="active">
+        <i class="bi bi-calendar2-week-fill nav-icon"></i>
+        <span>Appointments</span>
+      </a>
+      <a class="nav-item active" routerLink="/settings" routerLinkActive="active">
+        <i class="bi bi-gear-fill nav-icon"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="logout-section">
+      <a class="logout-button" (click)="logout()">
+        <i class="bi bi-box-arrow-right nav-icon"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="settings-container">
+    
+      
+      <!-- License Modal -->
+      <div class="license-modal-overlay" *ngIf="showLicenseModal" (click)="closeLicenseModal()">
+        <div class="license-modal" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Your License Key</h2>
+          </div>
+          <div class="modal-content">
+            <div *ngIf="error" class="error-message">
+              <i class="bi bi-exclamation-circle"></i>
+              <p>{{error}}</p>
+            </div>
+            <div *ngIf="!error">
+              <p class="expiry-text">Your license key will expire in {{daysUntilExpiry}} days</p>
+              <div class="license-key-container">
+                <code class="license-key">{{licenseKey}}</code>
+                <button class="copy-button" (click)="copyLicenseKey()" title="Copy license key">
+                  <i class="bi bi-copy"></i>
+                </button>
+              </div>
+              <p class="info-text">
+                Please keep this key safe and use it to register additional<br/>
+                doctors on your account.
+              </p>
+              <button class="renew-button" (click)="renewLicense()">
+                Renew
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unsubscribe Modal -->
+      <div class="unsubscribe-modal-overlay" *ngIf="showUnsubscribeModal" (click)="closeUnsubscribeModal()">
+        <div class="unsubscribe-modal" (click)="$event.stopPropagation()">
+          <div class="modal-header danger">
+            <h2>Confirm Unsubscribe</h2>
+          </div>
+          <div class="modal-content">
+            <div class="warning-icon">
+              <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <p class="warning-title">Are you sure you want to unsubscribe?</p>
+            <div class="warning-text">
+              This action will:
+              <ul>
+                <li>Cancel your current subscription</li>
+                <li>Temporarily suspend access to all features</li>
+                <li>Archive your account data</li>
+              </ul>
+              <p class="recovery-note">
+                Don't worry! If you resubscribe you'll be able to restore all your practice data, patient records, and account settings.
+              </p>
+            </div>
+            <div class="modal-actions">
+              <button class="cancel-button" (click)="closeUnsubscribeModal()">
+                Cancel
+              </button>
+              <button class="confirm-button" (click)="confirmUnsubscribe()">
+                Yes, Unsubscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-layout">
+        <!-- Profile Settings Section -->
+        <div class="settings-section">
+          <div class="section-header">
+            <i class="bi bi-person-fill settings-icon"></i>
+            <h2>Profile Settings</h2>
+          </div>
+          <div class="settings-content">
+            <div class="setting-item" (click)="navigateToDoctor()">
+              <div class="item-icon">
+                <i class="bi bi-person-vcard"></i>
+              </div>
+              <div class="setting-info">
+                <h3>Doctor Information</h3>
+                <p>Update your personal and professional details</p>
+              </div>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="settings-section">
+          <div class="section-header">
+            <i class="bi bi-shield-lock settings-icon"></i>
+            <h2>Security Settings</h2>
+          </div>
+          <div class="settings-content">
+            <div class="setting-item" (click)="changePassword()">
+              <div class="item-icon">
+                <i class="bi bi-key"></i>
+              </div>
+              <div class="setting-info">
+                <h3>Change Password</h3>
+                <p>Update your account password and security preferences</p>
+              </div>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- License Section -->
+        <div class="settings-section">
+          <div class="section-header">
+            <i class="bi bi-key-fill settings-icon"></i>
+            <h2>License Management</h2>
+          </div>
+          <div class="settings-content">
+            <div class="setting-item" (click)="viewLicense()">
+              <div class="item-icon">
+                <i class="bi bi-card-text"></i>
+              </div>
+              <div class="setting-info">
+                <h3>View License</h3>
+                <p>Access and manage your MedSecura license details</p>
+              </div>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Section -->
+        <div class="settings-section">
+          <div class="section-header">
+            <i class="bi bi-person-x-fill settings-icon danger"></i>
+            <h2>Account Management</h2>
+          </div>
+          <div class="settings-content">
+            <div class="setting-item danger" (click)="showUnsubscribeConfirmation()">
+              <div class="item-icon">
+                <i class="bi bi-trash"></i>
+              </div>
+              <div class="setting-info">
+                <h3>Unsubscribe</h3>
+                <p>Cancel your MedSecura subscription and manage account deletion</p>
+              </div>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

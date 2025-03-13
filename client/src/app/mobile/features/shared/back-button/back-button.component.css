@@ -1,0 +1,17 @@
+.back-button {
+    background: none;
+    border: none;
+    font-size: 25px;
+    color: #199A8E;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+   margin-top: 24px;
+   margin-left: 15px;
+   
+}
+
+.back-button i {
+  margin-right: 5px;
+}
+ 
